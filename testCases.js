@@ -69,6 +69,24 @@ const testCases = [
     value2: {a: undefined},
     expectedOutput: false,
   },
+  {
+    title: "null",
+    value1: null,
+    value2: null,
+    expectedOutput: true,
+  },
+  {
+    title: "null in objects",
+    value1: {a: null},
+    value2: {a: null},
+    expectedOutput: true,
+  },
+  {
+    title: "null in object and differentvalue",
+    value1: {a: null},
+    value2: {a: 5},
+    expectedOutput: false,
+  },
 ];
 
 function printResult(title, expectedResult, actualResult) {
