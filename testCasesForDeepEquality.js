@@ -87,6 +87,24 @@ const testCases = [
     value2: {a: 5},
     expectedOutput: false,
   },
+  {
+    title: "NaN",
+    value1: {a: NaN},
+    value2: {a: NaN},
+    expectedOutput: false,
+  },
+  {
+    title: "NaN and number",
+    value1: {a: NaN},
+    value2: {a: 5},
+    expectedOutput: false,
+  },
+  {
+    title: "NaN and string",
+    value1: {a: NaN},
+    value2: {a: "sandhya"},
+    expectedOutput: false,
+  },
 ];
 
 function printResult(title, expectedResult, actualResult) {
