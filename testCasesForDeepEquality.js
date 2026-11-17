@@ -1,123 +1,96 @@
 const deepEquality = require("./deepEquality");
-const testCases = [
-  {
-    title: "numbers",
-    value1: 1,
-    value2: 1,
-    expectedOutput: true,
-  },
-  {
-    title: "strings",
-    value1: "a",
-    value2: "a",
-    expectedOutput: true,
-  },
 
-  {
-    title: "emptyArray",
-    value1: [],
-    value2: [],
-    expectedOutput: true,
-  },
-
-  {
-    title: "array with same length",
-    value1: [1],
-    value2: [1],
-    expectedOutput: true,
-  },
-  {
-    title: "array with different length",
-    value1: [1],
-    value2: [1, 2],
-    expectedOutput: false,
-  },
-  {
-    title: "same Object",
-    value1: {a: 1},
-    value2: {a: 1},
-    expectedOutput: true,
-  },
-  {
-    title: "array in obect",
-    value1: {a: [1]},
-    value2: {a: [1]},
-    expectedOutput: true,
-  },
-  {
-    title: "object in object",
-    value1: {a: {b: 1}},
-    value2: {a: {b: 1}},
-    expectedOutput: true,
-  },
-  {
-    title: "array and object",
-    value1: {0: 1},
-    value2: [1],
-    expectedOutput: false,
-  },
-  {
-    title: "undefined and value",
-    value1: {a: undefined},
-    value2: {b: 1},
-    expectedOutput: false,
-  },
-  {
-    title: "value and undefined",
-    value1: {b: 1},
-    value2: {a: undefined},
-    expectedOutput: false,
-  },
-  {
-    title: "null",
-    value1: null,
-    value2: null,
-    expectedOutput: true,
-  },
-  {
-    title: "null in objects",
-    value1: {a: null},
-    value2: {a: null},
-    expectedOutput: true,
-  },
-  {
-    title: "null in object and differentvalue",
-    value1: {a: null},
-    value2: {a: 5},
-    expectedOutput: false,
-  },
-  {
-    title: "NaN",
-    value1: {a: NaN},
-    value2: {a: NaN},
-    expectedOutput: false,
-  },
-  {
-    title: "NaN and number",
-    value1: {a: NaN},
-    value2: {a: 5},
-    expectedOutput: false,
-  },
-  {
-    title: "NaN and string",
-    value1: {a: NaN},
-    value2: {a: "sandhya"},
-    expectedOutput: false,
-  },
-];
-
-function printResult(title, expectedResult, actualResult) {
+function isTestPassed(title, expectedResult, value1, value2) {
+  const actualResult = deepEquality.isEqual(value1, value2);
   const isPassed = actualResult === expectedResult;
-
   const symbol = isPassed ? "✅" : "❌";
 
-  const message = isPassed ? " Passed" : "failed";
-
-  console.log(`${symbol} ${message} : For the ${title}`);
+  console.log(`${symbol} : ${title}`);
 }
 
-for (const testCase of testCases) {
-  const acutalResult = deepEquality.isEqual(testCase.value1, testCase.value2);
-
-  printResult(testCase.title, testCase.expectedOutput, acutalResult);
+function testBooleans() {
+  isTestPassed("both false should be equal", true, false, false);
+  isTestPassed("both true should be equal", true, true, true);
+  isTestPassed("false and true should not be equal", false, true, false);
+  isTestPassed("true and false should not be equal", false, true, false);
 }
+
+function testNumbers() {
+  isTestPassed("same positive numbers should be equal", true, 5, 5);
+  isTestPassed("diff positive numbers should not be equal", false, 5, 10);
+  isTestPassed("same negative numbers should be equal", true, -5, -5);
+  isTestPassed("diff negative numbers should not be equal", false, -5, -10);
+  isTestPassed("pos & neg numbers should not be equal", false, 5, -10);
+}
+
+function testStrings() {
+  isTestPassed("same strings should be equal", true, "sandhya", "sandhya");
+  isTestPassed("different strings should not be equal", false, "a", "b");
+}
+
+function testArrays() {
+  isTestPassed("empty arrays should be equal", true, [], []);
+  isTestPassed("diff lengths array should not be equal", false, [1], []);
+  isTestPassed("sameLengths array should be equal", true, [2, 3], [2, 3]);
+  isTestPassed("diff values should not be equal", false, [2, 4], [2, 3]);
+  isTestPassed(
+    "nested arrays should be equal",
+    true,
+    [2, [4, 5], 3],
+    [2, [4, 5], 3],
+  );
+  isTestPassed(
+    "nested arrays diff vales should not be equal",
+    false,
+    [2, [4, 5], 3],
+    [2, [4, 6], 3],
+  );
+}
+
+function testObjects() {
+  isTestPassed("same keys and values should be equal", true, {a: 1}, {a: 1});
+  isTestPassed("diff keys should be not equal", false, {a: 1}, {b: 1});
+  isTestPassed("diff values should be equal", false, {a: 1}, {a: 2});
+  isTestPassed(
+    "diff keys and values should not be equal",
+    false,
+    {a: 1},
+    {b: 2},
+  );
+  isTestPassed("same nestedObjects should be equal", true, {a: [1]}, {a: [1]});
+  isTestPassed("diff nestedObjects should be equal", false, {a: [1]}, {a: [2]});
+}
+
+function testDiffTypes() {
+  isTestPassed("string and num should not be equal", false, "1", 1);
+  isTestPassed("string and boolean should not be equal", false, "1", true);
+  isTestPassed("string and arrays should not be equal", false, "1", [1]);
+  isTestPassed("string and objects should not be equal", false, "1", {0: 1});
+  isTestPassed("num and booleans should not be equal", false, 1, false);
+  isTestPassed("num and arrays should not be equal", false, 1, [1, 2]);
+  isTestPassed("num and objects should not be equal", false, 1, {0: 1});
+  isTestPassed("boolean and arrays should not be equal", false, true, [1]);
+  isTestPassed("boolean and objects should not be equal", false, false, {a: 1});
+  isTestPassed("arrays and objects should not be equal", false, [1], {0: 1});
+}
+
+function testEdgeCases() {
+  isTestPassed("both NaN should be equal", true, NaN, NaN);
+  isTestPassed("both undefined should be equal", true, undefined, undefined);
+  isTestPassed("both null should be equal", true, null, null);
+  isTestPassed("null and object should not be equal", false, null, {a: 1});
+  isTestPassed("NaN and number", false, NaN, 5);
+  isTestPassed("undefined and object", false, undefined, {a: undefined});
+}
+
+function testCases() {
+  testBooleans();
+  testNumbers();
+  testStrings();
+  testArrays();
+  testObjects();
+  testDiffTypes();
+  testEdgeCases();
+}
+
+testCases();
