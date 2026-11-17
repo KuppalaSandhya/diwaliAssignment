@@ -19,6 +19,7 @@ function areArraysEqual(value1, value2) {
   for (let index = 0; index < value1.length; index++) {
     if (!isEqual(value1[index], value2[index])) return false;
   }
+
   return true;
 }
 

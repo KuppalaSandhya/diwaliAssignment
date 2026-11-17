@@ -5,7 +5,7 @@ function isTestPassed(title, expectedResult, value1, value2) {
   const isPassed = actualResult === expectedResult;
   const symbol = isPassed ? "✅" : "❌";
 
-  console.log(`${symbol} : ${title}`);
+  console.log(`${symbol} | ${title}`);
 }
 
 function testBooleans() {
