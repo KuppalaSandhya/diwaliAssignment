@@ -1,5 +1,4 @@
 const deepEquality = require("./deepEquality");
-
 const testCases = [
   {
     title: "numbers",
