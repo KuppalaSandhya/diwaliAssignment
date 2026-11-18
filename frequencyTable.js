@@ -12,4 +12,6 @@ function getFrequencyTable(data) {
 }
 
 const fruits = ["apple", "banana", "apple", "apple", "orange", "banana"];
+const nums = [1, 2, 3, 2, 1];
 console.log(getFrequencyTable(fruits));
+console.log(getFrequencyTable(nums));

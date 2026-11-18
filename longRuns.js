@@ -1,23 +1,28 @@
-function findRuns(numbers, runs) {
-  if (numbers.length === 0) return [];
+function findRuns(nums) {
+  const runs = [];
+  let currentRun = [nums[0]];
+  let direction = 0;
 
-  const run = [numbers[0]];
-  const ascendingOrder = numbers[0] < numbers[1];
-  const decendingOrder = numbers[0] > numbers[1];
-
-  let i = 0;
-  while (
-    (ascendingOrder && numbers[i] < numbers[i + 1]) ||
-    (decendingOrder && numbers[i] > numbers[i + 1])
-  ) {
-    i++;
-    run.push(numbers[i]);
+  for (let i = 1; i < nums.length; i++) {
+    let currentDirection = Math.sign(nums[i] - nums[i - 1]);
+    if (
+      direction === currentDirection ||
+      direction === 0 ||
+      currentDirection === 0
+    ) {
+      currentRun.push(nums[i]);
+      if (currentDirection !== 0) {
+        direction = currentDirection;
+      }
+    } else {
+      runs.push(currentRun);
+      currentRun = [nums[i]];
+      direction = Math.sign(nums[i + 1] - nums[i]);
+    }
   }
-
-  runs.push(run);
-  findRuns(numbers.slice(i + 1), runs);
+  runs.push(currentRun);
   return runs;
 }
 
-const runs = [];
-console.log(findRuns([1, 2, 3, 4, 6, 4, 2, 1, 2, 3], runs));
+const numbers = [1, 2, 3, 4, 6, 7, 5, 4];
+console.log(findRuns(numbers));
